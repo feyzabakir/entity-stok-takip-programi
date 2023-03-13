@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PROJE2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CATEGORIES">
+          <Key>
+            <PropertyRef Name="KATEGORIID" />
+          </Key>
+          <Property Name="KATEGORIID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KATEGORIAD" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="KULLANICILAR">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KULLANICI" Type="varchar" MaxLength="50" />
+          <Property Name="SIFRE" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MUSTERILER">
+          <Key>
+            <PropertyRef Name="MUSTERIID" />
+          </Key>
+          <Property Name="MUSTERIID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MUSTERIAD" Type="varchar" MaxLength="50" />
+          <Property Name="MUSTERISOYAD" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PERSONELLER">
+          <Key>
+            <PropertyRef Name="PERSONELID" />
+          </Key>
+          <Property Name="PERSONELID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PERSONELADSOYAD" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="SATISLAR">
+          <Key>
+            <PropertyRef Name="SATISID" />
+          </Key>
+          <Property Name="SATISID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="URUN" Type="int" />
+          <Property Name="PERSONEL" Type="int" />
+          <Property Name="MUSTERI" Type="int" />
+          <Property Name="FIYAT" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="URUNLER">
+          <Key>
+            <PropertyRef Name="URUNID" />
+          </Key>
+          <Property Name="URUNID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="URUNAD" Type="varchar" MaxLength="50" />
+          <Property Name="URUNMARKA" Type="varchar" MaxLength="50" />
+          <Property Name="URUNKATEGORI" Type="int" />
+          <Property Name="URUNFIYAT" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="URUNSTOK" Type="int" />
+          <Property Name="DURUM" Type="bit" />
+        </EntityType>
+        <Association Name="FK_SATISLAR_MUSTERILER">
+          <End Role="MUSTERILER" Type="Self.MUSTERILER" Multiplicity="0..1" />
+          <End Role="SATISLAR" Type="Self.SATISLAR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUSTERILER">
+              <PropertyRef Name="MUSTERIID" />
+            </Principal>
+            <Dependent Role="SATISLAR">
+              <PropertyRef Name="MUSTERI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SATISLAR_PERSONELLER">
+          <End Role="PERSONELLER" Type="Self.PERSONELLER" Multiplicity="0..1" />
+          <End Role="SATISLAR" Type="Self.SATISLAR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSONELLER">
+              <PropertyRef Name="PERSONELID" />
+            </Principal>
+            <Dependent Role="SATISLAR">
+              <PropertyRef Name="PERSONEL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SATISLAR_URUNLER">
+          <End Role="URUNLER" Type="Self.URUNLER" Multiplicity="1" />
+          <End Role="SATISLAR" Type="Self.SATISLAR" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="URUNLER">
+              <PropertyRef Name="URUNID" />
+            </Principal>
+            <Dependent Role="SATISLAR">
+              <PropertyRef Name="SATISID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_URUNLER_CATEGORIES">
+          <End Role="CATEGORIES" Type="Self.CATEGORIES" Multiplicity="0..1" />
+          <End Role="URUNLER" Type="Self.URUNLER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORIES">
+              <PropertyRef Name="KATEGORIID" />
+            </Principal>
+            <Dependent Role="URUNLER">
+              <PropertyRef Name="URUNKATEGORI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PROJE2ModelStoreContainer">
+          <EntitySet Name="CATEGORIES" EntityType="Self.CATEGORIES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KULLANICILAR" EntityType="Self.KULLANICILAR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MUSTERILER" EntityType="Self.MUSTERILER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PERSONELLER" EntityType="Self.PERSONELLER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SATISLAR" EntityType="Self.SATISLAR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="URUNLER" EntityType="Self.URUNLER" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_SATISLAR_MUSTERILER" Association="Self.FK_SATISLAR_MUSTERILER">
+            <End Role="MUSTERILER" EntitySet="MUSTERILER" />
+            <End Role="SATISLAR" EntitySet="SATISLAR" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SATISLAR_PERSONELLER" Association="Self.FK_SATISLAR_PERSONELLER">
+            <End Role="PERSONELLER" EntitySet="PERSONELLER" />
+            <End Role="SATISLAR" EntitySet="SATISLAR" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SATISLAR_URUNLER" Association="Self.FK_SATISLAR_URUNLER">
+            <End Role="URUNLER" EntitySet="URUNLER" />
+            <End Role="SATISLAR" EntitySet="SATISLAR" />
+          </AssociationSet>
+          <AssociationSet Name="FK_URUNLER_CATEGORIES" Association="Self.FK_URUNLER_CATEGORIES">
+            <End Role="CATEGORIES" EntitySet="CATEGORIES" />
+            <End Role="URUNLER" EntitySet="URUNLER" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PROJE2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CATEGORIES">
+          <Key>
+            <PropertyRef Name="KATEGORIID" />
+          </Key>
+          <Property Name="KATEGORIID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KATEGORIAD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="URUNLER" Relationship="Self.FK_URUNLER_CATEGORIES" FromRole="CATEGORIES" ToRole="URUNLER" />
+        </EntityType>
+        <EntityType Name="MUSTERILER">
+          <Key>
+            <PropertyRef Name="MUSTERIID" />
+          </Key>
+          <Property Name="MUSTERIID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MUSTERIAD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MUSTERISOYAD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SATISLAR" Relationship="Self.FK_SATISLAR_MUSTERILER" FromRole="MUSTERILER" ToRole="SATISLAR" />
+        </EntityType>
+        <EntityType Name="PERSONELLER">
+          <Key>
+            <PropertyRef Name="PERSONELID" />
+          </Key>
+          <Property Name="PERSONELID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PERSONELADSOYAD" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SATISLAR" Relationship="Self.FK_SATISLAR_PERSONELLER" FromRole="PERSONELLER" ToRole="SATISLAR" />
+        </EntityType>
+        <EntityType Name="SATISLAR">
+          <Key>
+            <PropertyRef Name="SATISID" />
+          </Key>
+          <Property Name="SATISID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="URUN" Type="Int32" />
+          <Property Name="PERSONEL" Type="Int32" />
+          <Property Name="MUSTERI" Type="Int32" />
+          <Property Name="FIYAT" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="MUSTERILER" Relationship="Self.FK_SATISLAR_MUSTERILER" FromRole="SATISLAR" ToRole="MUSTERILER" />
+          <NavigationProperty Name="PERSONELLER" Relationship="Self.FK_SATISLAR_PERSONELLER" FromRole="SATISLAR" ToRole="PERSONELLER" />
+          <NavigationProperty Name="URUNLER" Relationship="Self.FK_SATISLAR_URUNLER" FromRole="SATISLAR" ToRole="URUNLER" />
+        </EntityType>
+        <EntityType Name="URUNLER">
+          <Key>
+            <PropertyRef Name="URUNID" />
+          </Key>
+          <Property Name="URUNID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="URUNAD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="URUNMARKA" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="URUNKATEGORI" Type="Int32" />
+          <Property Name="URUNFIYAT" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="URUNSTOK" Type="Int32" />
+          <NavigationProperty Name="CATEGORIES" Relationship="Self.FK_URUNLER_CATEGORIES" FromRole="URUNLER" ToRole="CATEGORIES" />
+          <NavigationProperty Name="SATISLAR" Relationship="Self.FK_SATISLAR_URUNLER" FromRole="URUNLER" ToRole="SATISLAR" />
+          <Property Name="DURUM" Type="Boolean" />
+        </EntityType>
+        <Association Name="FK_URUNLER_CATEGORIES">
+          <End Role="CATEGORIES" Type="Self.CATEGORIES" Multiplicity="0..1" />
+          <End Role="URUNLER" Type="Self.URUNLER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORIES">
+              <PropertyRef Name="KATEGORIID" />
+            </Principal>
+            <Dependent Role="URUNLER">
+              <PropertyRef Name="URUNKATEGORI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SATISLAR_MUSTERILER">
+          <End Role="MUSTERILER" Type="Self.MUSTERILER" Multiplicity="0..1" />
+          <End Role="SATISLAR" Type="Self.SATISLAR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MUSTERILER">
+              <PropertyRef Name="MUSTERIID" />
+            </Principal>
+            <Dependent Role="SATISLAR">
+              <PropertyRef Name="MUSTERI" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SATISLAR_PERSONELLER">
+          <End Role="PERSONELLER" Type="Self.PERSONELLER" Multiplicity="0..1" />
+          <End Role="SATISLAR" Type="Self.SATISLAR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERSONELLER">
+              <PropertyRef Name="PERSONELID" />
+            </Principal>
+            <Dependent Role="SATISLAR">
+              <PropertyRef Name="PERSONEL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SATISLAR_URUNLER">
+          <End Role="URUNLER" Type="Self.URUNLER" Multiplicity="1" />
+          <End Role="SATISLAR" Type="Self.SATISLAR" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="URUNLER">
+              <PropertyRef Name="URUNID" />
+            </Principal>
+            <Dependent Role="SATISLAR">
+              <PropertyRef Name="SATISID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PROJE2Entities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CATEGORIES" EntityType="Self.CATEGORIES" />
+          <EntitySet Name="MUSTERILER" EntityType="Self.MUSTERILER" />
+          <EntitySet Name="PERSONELLER" EntityType="Self.PERSONELLER" />
+          <EntitySet Name="SATISLAR" EntityType="Self.SATISLAR" />
+          <EntitySet Name="URUNLER" EntityType="Self.URUNLER" />
+          <AssociationSet Name="FK_URUNLER_CATEGORIES" Association="Self.FK_URUNLER_CATEGORIES">
+            <End Role="CATEGORIES" EntitySet="CATEGORIES" />
+            <End Role="URUNLER" EntitySet="URUNLER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SATISLAR_MUSTERILER" Association="Self.FK_SATISLAR_MUSTERILER">
+            <End Role="MUSTERILER" EntitySet="MUSTERILER" />
+            <End Role="SATISLAR" EntitySet="SATISLAR" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SATISLAR_PERSONELLER" Association="Self.FK_SATISLAR_PERSONELLER">
+            <End Role="PERSONELLER" EntitySet="PERSONELLER" />
+            <End Role="SATISLAR" EntitySet="SATISLAR" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SATISLAR_URUNLER" Association="Self.FK_SATISLAR_URUNLER">
+            <End Role="URUNLER" EntitySet="URUNLER" />
+            <End Role="SATISLAR" EntitySet="SATISLAR" />
+          </AssociationSet>
+          <EntitySet Name="KULLANICILAR" EntityType="PROJE2Model.KULLANICILAR" />
+        </EntityContainer>
+        <EntityType Name="KULLANICILAR">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KULLANICI" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SIFRE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PROJE2ModelStoreContainer" CdmEntityContainer="PROJE2Entities1">
+          <EntitySetMapping Name="CATEGORIES">
+            <EntityTypeMapping TypeName="PROJE2Model.CATEGORIES">
+              <MappingFragment StoreEntitySet="CATEGORIES">
+                <ScalarProperty Name="KATEGORIID" ColumnName="KATEGORIID" />
+                <ScalarProperty Name="KATEGORIAD" ColumnName="KATEGORIAD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MUSTERILER">
+            <EntityTypeMapping TypeName="PROJE2Model.MUSTERILER">
+              <MappingFragment StoreEntitySet="MUSTERILER">
+                <ScalarProperty Name="MUSTERIID" ColumnName="MUSTERIID" />
+                <ScalarProperty Name="MUSTERIAD" ColumnName="MUSTERIAD" />
+                <ScalarProperty Name="MUSTERISOYAD" ColumnName="MUSTERISOYAD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERSONELLER">
+            <EntityTypeMapping TypeName="PROJE2Model.PERSONELLER">
+              <MappingFragment StoreEntitySet="PERSONELLER">
+                <ScalarProperty Name="PERSONELID" ColumnName="PERSONELID" />
+                <ScalarProperty Name="PERSONELADSOYAD" ColumnName="PERSONELADSOYAD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SATISLAR">
+            <EntityTypeMapping TypeName="PROJE2Model.SATISLAR">
+              <MappingFragment StoreEntitySet="SATISLAR">
+                <ScalarProperty Name="SATISID" ColumnName="SATISID" />
+                <ScalarProperty Name="URUN" ColumnName="URUN" />
+                <ScalarProperty Name="PERSONEL" ColumnName="PERSONEL" />
+                <ScalarProperty Name="MUSTERI" ColumnName="MUSTERI" />
+                <ScalarProperty Name="FIYAT" ColumnName="FIYAT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="URUNLER">
+            <EntityTypeMapping TypeName="PROJE2Model.URUNLER">
+              <MappingFragment StoreEntitySet="URUNLER">
+                <ScalarProperty Name="DURUM" ColumnName="DURUM" />
+                <ScalarProperty Name="URUNID" ColumnName="URUNID" />
+                <ScalarProperty Name="URUNAD" ColumnName="URUNAD" />
+                <ScalarProperty Name="URUNMARKA" ColumnName="URUNMARKA" />
+                <ScalarProperty Name="URUNKATEGORI" ColumnName="URUNKATEGORI" />
+                <ScalarProperty Name="URUNFIYAT" ColumnName="URUNFIYAT" />
+                <ScalarProperty Name="URUNSTOK" ColumnName="URUNSTOK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KULLANICILAR">
+            <EntityTypeMapping TypeName="PROJE2Model.KULLANICILAR">
+              <MappingFragment StoreEntitySet="KULLANICILAR">
+                <ScalarProperty Name="SIFRE" ColumnName="SIFRE" />
+                <ScalarProperty Name="KULLANICI" ColumnName="KULLANICI" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
